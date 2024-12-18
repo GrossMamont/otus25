@@ -1,0 +1,17 @@
+---
+- hosts: web
+  become: true
+  tasks: 
+  - name: access_log
+    ansible.builtin.lineinfile:
+      path: /etc/nginx/nginx.conf
+      insertafter: 'access_log /var/log/nginx/access.log;'
+      line: '        access_log syslog:server=192.168.56.11:514,tag=nginx_access,severity=info combined;'
+      state: present
+
+  - name: error_log
+    ansible.builtin.lineinfile:
+      path: /etc/nginx/nginx.conf
+      insertafter: 'error_log /var/log/nginx/error.log;'
+      line: '        error_log syslog:server=192.168.56.11:514,tag=nginx_error;'
+      state: present
